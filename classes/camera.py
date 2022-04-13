@@ -7,18 +7,6 @@ class Camera:
         self.j = 0
         self.speed = speed
 
-    def move_left(self):
-        self.j += self.speed
-
-    def move_right(self):
-        self.j -= self.speed
-
-    def move_down(self):
-        self.i -= self.speed
-
-    def move_up(self):
-        self.i += self.speed
-
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
@@ -30,8 +18,8 @@ class Camera:
         elif keys[pygame.K_s]:
             self.j -= self.speed
 
-        # self.i = max(0, self.i)
-        # self.j = max(0, self.j)
+    def reset(self):
+        self.i, self.j = 0, 0
 
     @property
     def offset(self):

@@ -9,16 +9,16 @@ class Grid:
         self.grid = pygame.Surface([rows * size, columns * size])
         self.grid.fill('#567e4a')
 
-    def update_grid(self):
+    def initialize_grid(self):
         n = self.rows * self.size
         m = self.cols * self.size
-        for i in range(0, n, self.size+1):
+        for i in range(0, n + 1, self.size):
             pygame.draw.line(self.grid, 'black', (0, i), (n, i))
-            for j in range(0, m, self.size+1):
+            for j in range(0, m + 1, self.size):
                 pygame.draw.line(self.grid, 'black', (j, 0), (j, m))
 
     def update_cell(self, i, j, color):
-        rect = pygame.Rect(i, j, self.size, self.size)
+        rect = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
         pygame.draw.rect(self.grid, color, rect)
 
     def get_grid(self):

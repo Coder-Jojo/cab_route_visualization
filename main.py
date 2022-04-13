@@ -1,28 +1,21 @@
-import pygame
-from sys import exit
+import threading
 from classes.grid import Grid
 from classes.camera import Camera
+from gui import run_gui
+from logics import logic
+
 
 # grid initialization
 grid = Grid(100, 100, 50)
-grid.update_grid()
+grid.initialize_grid()
 
 # camera initialization
 camera = Camera(30)
 
-# screen and pygame initialization
-pygame.init()
-screen = pygame.display.set_mode((1200, 700))
-clock = pygame.time.Clock()
+if __name__ == '__main__':
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
+    # running logical part in the different thread to speed the gui
+    threading.Thread(target=logic, args=[grid], daemon=True).start()
 
-    screen.fill('black')
-    screen.blit(grid.get_grid(), camera.offset)
-    camera.update()
-    pygame.display.flip()
-    clock.tick(60)
+    # GUI
+    run_gui(grid, camera)
