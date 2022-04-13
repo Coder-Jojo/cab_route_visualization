@@ -8,11 +8,11 @@ grid = Grid(100, 100, 50)
 grid.update_grid()
 
 # camera initialization
-camera = Camera(10)
+camera = Camera(30)
 
 # screen and pygame initialization
 pygame.init()
-screen = pygame.display.set_mode((500, 500))
+screen = pygame.display.set_mode((1200, 700))
 clock = pygame.time.Clock()
 
 while True:
@@ -21,7 +21,7 @@ while True:
             pygame.quit()
             exit()
 
-    screen.fill('grey')
+    screen.fill('black')
     screen.blit(grid.get_grid(), camera.offset)
     camera.update()
     pygame.display.flip()

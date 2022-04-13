@@ -6,7 +6,8 @@ class Grid:
         self.rows = rows
         self.cols = columns
         self.size = size
-        self.grid = pygame.Surface([rows * size, columns * size], pygame.SRCALPHA, 32)
+        self.grid = pygame.Surface([rows * size, columns * size])
+        self.grid.fill('#567e4a')
 
     def update_grid(self):
         n = self.rows * self.size
