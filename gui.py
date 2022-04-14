@@ -17,7 +17,7 @@ def run_gui(grid, camera):
                 camera.reset()
 
         screen.fill('black')
-        screen.blit(grid.get_grid(), camera.offset)
+        screen.blit(grid.grid, camera.offset)
         camera.update()
         pygame.display.flip()
         clock.tick(32)

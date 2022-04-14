@@ -1,13 +1,15 @@
 import pygame
+import numpy as np
 
 
 class Grid:
-    def __init__(self, rows=20, columns=20, size=20):
+    def __init__(self, rows=100, columns=100, size=20):
         self.rows = rows
         self.cols = columns
         self.size = size
         self.grid = pygame.Surface([rows * size, columns * size])
         self.grid.fill('#567e4a')
+        self.matrix = np.zeros((rows, columns))
 
     def initialize_grid(self):
         n = self.rows * self.size
@@ -21,5 +23,35 @@ class Grid:
         rect = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
         pygame.draw.rect(self.grid, color, rect)
 
-    def get_grid(self):
-        return self.grid
+    def update_matrix(self, new_matrix):
+        if self.matrix.shape == new_matrix.shape:
+            self.matrix = new_matrix
+
+    def put_vertical_road(self, i, j):
+        rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
+        rect2 = pygame.Rect(i * self.size + self.size * .4, j * self.size + self.size * .2, self.size * .2, self.size * .6)
+        pygame.draw.rect(self.grid, 'grey', rect1)
+        pygame.draw.rect(self.grid, 'white', rect2)
+
+    def put_horizontal_road(self, i, j):
+        rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
+        rect2 = pygame.Rect(i * self.size + self.size * .2, j * self.size + self.size * .4, self.size * .6, self.size * .2)
+        pygame.draw.rect(self.grid, 'grey', rect1)
+        pygame.draw.rect(self.grid, 'white', rect2)
+
+    def put_intersection(self, i, j):
+        rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
+        # circle = pygame.C
+        pygame.draw.rect(self.grid, 'grey', rect1)
+        pygame.draw.circle(self.grid, 'white', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
+    # @property
+    # def get_grid(self):
+    #     return self.grid
+    #
+    # @property
+    # def get_matrix(self):
+    #     return self.matrix
+    #
+    # @property
+    # def cell_size(self):
+    #     return self.size
