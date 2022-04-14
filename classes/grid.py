@@ -37,7 +37,6 @@ class Grid:
 
     def put_intersection(self, i, j):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        # circle = pygame.C
         pygame.draw.rect(self.grid, 'grey', rect1)
         pygame.draw.circle(self.grid, 'white', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
 

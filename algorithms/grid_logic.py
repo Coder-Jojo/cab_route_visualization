@@ -6,8 +6,8 @@ def create_road(grid, cr_3, cr_4):
     matrix = grid.matrix
     n = grid.rows
     m = grid.cols
-    cross_3_prob = cr_3 / (n * n)
-    cross_4_prob = cr_4 / (n * n)
+    cross_3_prob = cr_3 / (n * m)
+    cross_4_prob = cr_4 / (n * m)
     for i in range(n):
         for j in range(m):
 
@@ -42,38 +42,44 @@ def create_road(grid, cr_3, cr_4):
     for i in range(n):
         for j in range(m):
             if matrix[i][j] == 1:
-                queue.append((i - 1, j, 1, -1))
-                queue.append((i + 1, j, 1, 1))
+                queue.append((i - 1, j, 1, -1, random.randint(3, 10)))
+                queue.append((i + 1, j, 1, 1, random.randint(3, 10)))
             if matrix[i][j] == 2:
-                queue.append((i, j - 1, 2, -1))
-                queue.append((i, j + 1, 2, 1))
+                queue.append((i, j - 1, 2, -1, random.randint(3, 10)))
+                queue.append((i, j + 1, 2, 1, random.randint(3, 10)))
 
     while len(queue):
-        x, y, z, k = queue[0]
+        x, y, z, k, cnt = queue[0]
         queue.pop(0)
+        cnt -= 1
 
         if x < 0 or y < 0 or x > n - 1 or y > m - 1:
             continue
 
         if matrix[x][y] == 0:
             matrix[x][y] = z
+            if cnt == 0:
+                if z == 1:
+                    z = 2
+                else:
+                    z = 1
+                if random.randint(0, 2) == 0:
+                    k = -1
+                else:
+                    k = 1
+                cnt = random.randint(3, 10)
+
             if z == 1:
                 x += k
             else:
                 y += k
-            queue.append((x, y, z, k))
+            queue.append((x, y, z, k, cnt))
 
     road = []
     for i in range(n):
         for j in range(m):
             if matrix[i][j] != 0:
                 road.append((j, i, matrix[i][j]))
-
-    nn = len(road) - 1
-    for i in range(nn):
-        random_index = random.randint(0, nn)
-        temp = road.pop(random_index)
-        road.append(temp)
 
     for x, y, z in road:
         if z == 1:
