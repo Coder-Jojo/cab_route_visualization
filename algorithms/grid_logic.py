@@ -63,17 +63,6 @@ def create_road(grid, cr_3, cr_4):
                 y += k
             queue.append((x, y, z, k))
 
-    for i in range(1, n - 1):
-        for j in range(1, m - 1):
-            cnt = 0
-            if matrix[i][j - 1] != 0: cnt += 1
-            if matrix[i][j + 1] != 0: cnt += 1
-            if matrix[i - 1][j] != 0: cnt += 1
-            if matrix[i + 1][j] != 0: cnt += 1
-
-            if cnt > 2:
-                matrix[i][j] = cnt
-
     road = []
     for i in range(n):
         for j in range(m):

@@ -23,10 +23,6 @@ class Grid:
         rect = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
         pygame.draw.rect(self.grid, color, rect)
 
-    def update_matrix(self, new_matrix):
-        if self.matrix.shape == new_matrix.shape:
-            self.matrix = new_matrix
-
     def put_vertical_road(self, i, j):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
         rect2 = pygame.Rect(i * self.size + self.size * .4, j * self.size + self.size * .2, self.size * .2, self.size * .6)
@@ -44,14 +40,4 @@ class Grid:
         # circle = pygame.C
         pygame.draw.rect(self.grid, 'grey', rect1)
         pygame.draw.circle(self.grid, 'white', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
-    # @property
-    # def get_grid(self):
-    #     return self.grid
-    #
-    # @property
-    # def get_matrix(self):
-    #     return self.matrix
-    #
-    # @property
-    # def cell_size(self):
-    #     return self.size
+
