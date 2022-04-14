@@ -1,6 +1,16 @@
 import pygame
 import numpy as np
-from congestion import congestion_array, color_ret
+import math
+
+
+def congestion_array(rows, cols):
+    random_array = abs(np.random.normal(0, 0.5, rows * cols))
+    return random_array
+
+
+def color_ret(random_array, i, j):
+    return 255, 255 - min(255, math.floor(255 * random_array[i * 100 + j])), 255 - min(255, math.floor(
+        255 * random_array[i * 100 + j]))
 
 
 class Grid:
@@ -11,7 +21,7 @@ class Grid:
         self.grid = pygame.Surface([rows * size, columns * size])
         self.grid.fill('#567e4a')
         self.matrix = np.zeros((rows, columns))
-        self.congestion = congestion_array(rows,columns)
+        self.congestion = congestion_array(rows, columns)
 
     def initialize_grid(self):
         n = self.rows * self.size
@@ -27,18 +37,19 @@ class Grid:
 
     def put_vertical_road(self, i, j):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        rect2 = pygame.Rect(i * self.size + self.size * .4, j * self.size + self.size * .2, self.size * .2, self.size * .6)
-        pygame.draw.rect(self.grid, color_ret(self.congestion,i,j), rect1)
+        rect2 = pygame.Rect(i * self.size + self.size * .4, j * self.size + self.size * .2, self.size * .2,
+                            self.size * .6)
+        pygame.draw.rect(self.grid, color_ret(self.congestion, i, j), rect1)
         pygame.draw.rect(self.grid, '#2e2828', rect2)
 
     def put_horizontal_road(self, i, j):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        rect2 = pygame.Rect(i * self.size + self.size * .2, j * self.size + self.size * .4, self.size * .6, self.size * .2)
-        pygame.draw.rect(self.grid, color_ret(self.congestion,i,j), rect1)
+        rect2 = pygame.Rect(i * self.size + self.size * .2, j * self.size + self.size * .4, self.size * .6,
+                            self.size * .2)
+        pygame.draw.rect(self.grid, color_ret(self.congestion, i, j), rect1)
         pygame.draw.rect(self.grid, '#2e2828', rect2)
 
     def put_intersection(self, i, j):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        pygame.draw.rect(self.grid, color_ret(self.congestion,i,j), rect1)
+        pygame.draw.rect(self.grid, color_ret(self.congestion, i, j), rect1)
         pygame.draw.circle(self.grid, '#2e2828', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
-
