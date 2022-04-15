@@ -80,7 +80,7 @@ def create_road(grid, cr_3, cr_4):
           cnt=0
           a=i
           b=j
-          while(matrix[a][b]>0 and matrix[a+1][b]>0):
+          while(a < n and b < m and matrix[a][b]>0 and matrix[a+1][b]>0):
              cnt+=1
              b+=1
           
@@ -92,10 +92,10 @@ def create_road(grid, cr_3, cr_4):
              while(k<cnt-2):
                 if(flag==0):
                    matrix[a][b+1]=0
-                   print(a, b+1)
+                   # print(a, b+1)
                 else:
                    matrix[a+1][b+1]=0
-                   print(a+1, b+1)
+                   # print(a+1, b+1)
                 b+=1
                 k+=1
                 
@@ -103,7 +103,7 @@ def create_road(grid, cr_3, cr_4):
              cntv=0
              a=i
              b=j
-             while(matrix[a][b]>0 and matrix[a][b+1]>0):
+             while(a < n and b < m and matrix[a][b]>0 and matrix[a][b+1]>0):
                 cntv+=1
                 a+=1
              

@@ -2,7 +2,7 @@ import pygame
 from sys import exit
 
 
-def run_gui(grid, camera):
+def run_gui(grid, camera, taxi_group):
     pygame.init()
     screen = pygame.display.set_mode((1200, 700))
     clock = pygame.time.Clock()
@@ -17,7 +17,10 @@ def run_gui(grid, camera):
                 camera.reset()
 
         screen.fill('black')
-        screen.blit(grid.grid, camera.offset)
         camera.update()
+        screen.blit(grid.grid, camera.offset)
+        taxi_group.draw(screen)
+        taxi_group.update(camera.offset)
+
         pygame.display.flip()
         clock.tick(32)
