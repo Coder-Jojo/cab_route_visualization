@@ -74,6 +74,65 @@ def create_road(grid, cr_3, cr_4):
             else:
                 y += k
             queue.append((x, y, z, k, cnt))
+            
+    for i in range(n-1):
+       for j in range(m-1):
+          cnt=0
+          a=i
+          b=j
+          while(matrix[a][b]>0 and matrix[a+1][b]>0):
+             cnt+=1
+             b+=1
+          
+          if(cnt>2):
+             a=i
+             b=j
+             k=0
+             flag=random.randint(0,2)
+             while(k<cnt-2):
+                if(flag==0):
+                   matrix[a][b+1]=0
+                   print(a, b+1)
+                else:
+                   matrix[a+1][b+1]=0
+                   print(a+1, b+1)
+                b+=1
+                k+=1
+                
+          elif(cnt==2):
+             cntv=0
+             a=i
+             b=j
+             while(matrix[a][b]>0 and matrix[a][b+1]>0):
+                cntv+=1
+                a+=1
+             
+             if(cntv>2):
+                a=i
+                b=j
+                k=0
+                flag=random.randint(0,2)
+                while(k<cntv-2):
+                   if flag==0:
+                      matrix[a+1][b]=0
+                   else:
+                      matrix[a+1][b+1]=0
+                   a+=1
+                   k+=1
+             elif(cntv==2):
+                if random.randint(0,4)==0:
+                   matrix[i][j]=0
+                elif random.randint(0,4)==1:
+                   matrix[i][j+1]=0
+                elif random.randint(0,4)==2:
+                   matrix[i+1][j]=0
+                else:
+                   matrix[i+1][j+1]=0
+             
+             else:
+                continue
+          else:
+             continue
 
     road = []
     for i in range(n):
