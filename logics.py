@@ -1,5 +1,6 @@
 import time
 from algorithms.grid_logic import create_road
+from classes import A_star
 
 
 def logic(grid):
