@@ -138,7 +138,8 @@ def create_road(grid, cr_3, cr_4):
     for i in range(n):
         for j in range(m):
             if matrix[i][j] != 0:
-                road.append((j, i, matrix[i][j]))
+                # road.append((j, i, matrix[i][j]))
+                road.append((i, j, matrix[i][j]))
 
     for x, y, z in road:
         if z == 1:
@@ -147,6 +148,6 @@ def create_road(grid, cr_3, cr_4):
             grid.put_horizontal_road(x, y)
         elif z == 3 or z == 4:
             grid.put_intersection(x, y)
-        time.sleep(.01)
+        # time.sleep(.01)
 
     grid.matrix = matrix

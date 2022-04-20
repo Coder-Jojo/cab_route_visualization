@@ -1,9 +1,6 @@
 import threading
-
 import pygame.sprite
-
 from classes.grid import Grid
-from classes.camera import Camera
 from classes.taxi import Taxi
 from gui import run_gui
 from logics import logic
@@ -13,22 +10,24 @@ from logics import logic
 grid = Grid(100, 100, 50)
 grid.initialize_grid()
 
-# camera initialization
-camera = Camera(30)
-
 # taxi initialization
 taxi_group = pygame.sprite.Group()
 
-taxi_1 = Taxi()
-taxi_1.update_path([(0, 1), (1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (3, 4), (3, 5), (4, 5), (4, 4), \
-    (5, 4), (6, 4), (7, 4), (8, 4), (9, 4)])
+taxi_1 = Taxi('taxi_1', grid, 'taxi3', speed=6)
+taxi_2 = Taxi('taxi_2', grid, 'taxi', speed=4)
 taxi_group.add(taxi_1)
+taxi_group.add(taxi_2)
+
+taxis = [taxi_1, taxi_2]
 
 if __name__ == '__main__':
 
+    threading.Thread(target=logic, args=[grid, taxis], daemon=True).start()
+
     # running logical part in the different thread to speed the gui
-    threading.Thread(target=logic, args=[grid], daemon=True).start()
+    # for taxi in taxis:
+    #     threading.Thread(target=logic, args=[grid, taxi], daemon=True).start()
 
     # GUI
-    run_gui(grid, camera, taxi_group)
+    run_gui(grid, taxi_group)
 

@@ -3,14 +3,15 @@ import numpy as np
 import math   
 
 class Node:
-   def __init__(self, grid, loc=(0,0)):
+    def __init__(self, grid, loc=(0,0)):
       self.loc=loc
       self.parent=None
       self.f=self.g= grid.congestion[(loc[0]*grid.cols)+loc[1]] + grid.matrix[loc[0]][loc[1]]
-      self.h=0  
+      self.h=0
 
-'''def g_value(grid):
-   return grid.congestion((node.loc[0]*grid.cols)+node.loc[1]) + grid.matrix[node.loc[0]][node.loc[1]]''' 
+    # function for comparing equality between two nodes
+    def __eq__(self, otherNode):
+      return self.loc == otherNode.loc
    
 def manhattan(x,y):
   return abs(x[0]-y[0]) + abs(x[1]-y[1])
@@ -25,21 +26,24 @@ def find_min_node(openList):
          currentNode=node
          
    return currentNode, currentIndex
-   
+
+
 def get_child_nodes(currentNode, grid):
-   x,y = currentNode.loc
-   childNodes=[]
-   if grid.matrix[x-1][y]>0 and x-1>=0:
+   x, y = currentNode.loc
+   n, m = grid.rows, grid.cols
+   childNodes = []
+   if x-1>=0 and grid.matrix[x-1][y]>0:
       childNodes.append(Node(grid, loc=(x-1,y)))
-   if grid.matrix[x][y-1]>0 and y-1>=0:
+   if y-1>=0 and grid.matrix[x][y-1]>0:
       childNodes.append(Node(grid, loc=(x,y-1)))
-   if grid.matrix[x+1][y]>0 and x+1<100:
+   if x+1<n and grid.matrix[x+1][y]>0:
       childNodes.append(Node(grid, loc=(x+1,y)))
-   if grid.matrix[x][y+1]>0 and y+1<100:
+   if y+1<m and grid.matrix[x][y+1]>0:
       childNodes.append(Node(grid, loc=(x,y+1)))
    
    return childNodes
-   
+
+
 def search_path(start, end, grid):
 
   # creating Open and closed Lists
@@ -62,7 +66,7 @@ def search_path(start, end, grid):
     # if the goal node is reached then break
     if currentNode == end:
       break
-    
+
     # find all the children of current Node
     children = get_child_nodes(currentNode, grid)
 
@@ -78,7 +82,7 @@ def search_path(start, end, grid):
         child.f = child.g + child.h
         child.parent = currentNode
         continue
-      
+
       child.h = manhattan(child.loc, end.loc)    # calculating f = g + h
       child.f = child.g + child.h
 
@@ -91,7 +95,6 @@ def search_path(start, end, grid):
 def path(start, closedList, grid, end):
 
   path = []
-  print(closedList)
 
   # start with the goal node and backtrack to the starting node by visiting
   # parents of each backtracked node
@@ -101,7 +104,7 @@ def path(start, closedList, grid, end):
     path.append(currentNode.loc)
     currentNode = currentNode.parent
   path.append(currentNode.loc)
-  
+
   return path
 
 

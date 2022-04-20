@@ -1,16 +1,27 @@
+import random
 import time
-from algorithms.grid_logic import create_road
+import threading
 from classes import A_star
+from algorithms.grid_logic import create_road
 
 
-def logic(grid):
+def run_taxi(grid, taxi):
+    matrix = grid.matrix
+    roads = []
+    for i, a in enumerate(matrix):
+        for j, b in enumerate(a):
+            if b > 0:
+                roads.append((i, j))
+    # print(roads)
+    start = A_star.Node(grid, loc=roads[random.randint(0, len(roads))])
+    end = A_star.Node(grid, loc=roads[random.randint(0, len(roads))])
+    path = A_star.path(start, A_star.search_path(start, end, grid), grid, end)
+    taxi.spawn(path[0][0], path[0][1])
+    taxi.update_path(path)
+
+
+def logic(grid, taxis):
     create_road(grid, 40, 20)
-    start_x=int(input())
-    start_y=int(input())
-    end_x=int(input())
-    end_y=int(input())
-    #x=A_star.g_value(grid)
-    start=A_star.Node(grid, loc=(start_y,start_x))
-    end=A_star.Node(grid, loc=(end_y, end_x))
-    closedList = A_star.search_path(start, end, grid)
-    print(A_star.path(start, closedList, grid, end))
+
+    for taxi in taxis:
+        threading.Thread(target=run_taxi, args=[grid, taxi], daemon=True).start()
