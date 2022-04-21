@@ -3,6 +3,7 @@ import time
 import threading
 from classes import A_star
 from algorithms.grid_logic import create_road
+from classes.spawn import Spawn
 
 
 def run_taxi(grid, taxi):
@@ -20,8 +21,11 @@ def run_taxi(grid, taxi):
     taxi.update_path(path)
 
 
-def logic(grid, taxis):
+def logic(grid, taxis, structures):
     create_road(grid, 40, 20)
+
+    image_1 = Spawn(2, 2, 3, 'taxi', grid.size)
+    structures.add(image_1)
 
     for taxi in taxis:
         threading.Thread(target=run_taxi, args=[grid, taxi], daemon=True).start()

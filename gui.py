@@ -3,7 +3,7 @@ from sys import exit
 from classes.camera import Camera
 
 
-def run_gui(grid, taxi_group):
+def run_gui(grid, taxi_group, structures):
     pygame.init()
     screen = pygame.display.set_mode((1200, 700))
     clock = pygame.time.Clock()
@@ -28,6 +28,9 @@ def run_gui(grid, taxi_group):
         screen.blit(grid.grid, camera.offset)
         taxi_group.draw(screen)
         taxi_group.update(camera.offset)
+        structures.draw(screen)
+        structures.update(camera.offset)
+        # build.update(camera.offset)
 
         pygame.display.flip()
         clock.tick(32)
