@@ -45,7 +45,7 @@ class Grid:
         self.cols = columns
         self.size = size
         self.grid = pygame.Surface([rows * size, columns * size])
-        self.grid.fill('#5ba61b')
+        self.grid.fill('#0b8a33')
         self.matrix = np.zeros((rows, columns))
         self.congestion = np.zeros(rows*columns)
         self.location = dict()
@@ -57,9 +57,9 @@ class Grid:
         n = self.rows * self.size
         m = self.cols * self.size
         for i in range(0, n + 1, self.size):
-            pygame.draw.line(self.grid, 'black', (0, i), (n, i))
+            pygame.draw.line(self.grid, '#096e29', (0, i), (n, i))
             for j in range(0, m + 1, self.size):
-                pygame.draw.line(self.grid, 'black', (j, 0), (j, m))
+                pygame.draw.line(self.grid, '#096e29', (j, 0), (j, m))
 
     def update_cell(self, i, j, color):
         rect = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
@@ -76,7 +76,7 @@ class Grid:
         if color is None:
             color = new_color
         pygame.draw.rect(self.grid, color, rect1)
-        pygame.draw.rect(self.grid, '#2e2828', rect2)
+        pygame.draw.rect(self.grid, '#424242', rect2)
 
     def put_horizontal_road(self, i, j, highlight=False, color=None):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
@@ -89,7 +89,7 @@ class Grid:
         if color is None:
             color = new_color
         pygame.draw.rect(self.grid, color, rect1)
-        pygame.draw.rect(self.grid, '#2e2828', rect2)
+        pygame.draw.rect(self.grid, '#424242', rect2)
 
     def put_intersection(self, i, j, highlight=False, color=None):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
@@ -100,7 +100,7 @@ class Grid:
         if color is None:
             color = new_color
         pygame.draw.rect(self.grid, color, rect1)
-        pygame.draw.circle(self.grid, '#2e2828', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
+        pygame.draw.circle(self.grid, '#424242', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
 
     def special_grid(self, i, j, color):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
