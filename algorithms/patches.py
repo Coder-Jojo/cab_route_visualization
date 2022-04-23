@@ -4,7 +4,7 @@ pos_col = [0,0,1,-1]
 def valid(vis,r,c,ar,row_size, col_size):
   if(r<0 or c<0 or r>=row_size or c>= col_size):
     return False
-  if(ar[r][c] == 1):
+  if(ar.matrix[r][c] != 0):
     return False
   if(vis[r][c]):
     return False
@@ -20,7 +20,7 @@ def find_patch(ar,i,j,vis):
     patch_send.append((cell[0],cell[1]))
 
     for i in range(len(pos_row)):
-      if valid(vis, cell[0]+pos_row[i], cell[1]+pos_col[i],ar, len(ar), len(ar[0])):
+      if valid(vis, cell[0]+pos_row[i], cell[1]+pos_col[i],ar, ar.rows, ar.cols):
         q.append((cell[0]+pos_row[i], cell[1]+pos_col[i]))
         vis[cell[0]+pos_row[i]][cell[1]+pos_col[i]] = True
         patch_send.append((cell[0]+pos_row[i], cell[1]+pos_col[i],))
@@ -35,15 +35,18 @@ def Diff(li1, li2):
 def make_patch(ar):
     patches = []
     vis = []
-    for i in range(len(ar)):
+    for i in range(ar.rows):
         temp = []
-        for j in range(len(ar[0])):
+        for j in range(ar.cols):
             temp.append(False)
         vis.append(temp)
+    # print(vis)
     
-    for i in range(len(ar)):
-        for j in range(len(ar[0])):
-            if(vis[i][j] == False and ar[i][j]!= 1):
+    for i in range(ar.rows):
+        for j in range(ar.cols):
+            
+            if(vis[i][j] == False and ar.matrix[i][j]== 0):
+                # print("called")
                 z, vis_new = find_patch(ar,i,j,vis)
                 patches.append(z)
                 vis = vis_new

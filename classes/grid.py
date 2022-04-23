@@ -2,10 +2,36 @@ import pygame
 import numpy as np
 import math
 
+def check_valid(grid,i,j):
+    if(i<0 or i>=100 or j<0 or j>= 100 ):
+        return False
+    if(grid.matrix[i][j]>=0):
+        return False
+    return True
 
-def congestion_array(rows, cols):
-    random_array = abs(np.random.normal(0, 0.5, rows * cols))
-    return random_array
+def congestion_array(grid):
+    print(grid.matrix)
+    congested = []
+    for i in range(grid.rows):
+        for j in range(grid.cols):
+            sum = 0
+            if(grid.matrix[i][j]>0):
+                #print("Found")
+                if(check_valid(grid,i-1,j)): #left
+                    sum += (-1)*grid.matrix[i-1][j]
+                if(check_valid(grid,i+1,j)): #right
+                    sum += (-1)*grid.matrix[i+1][j]
+                if(check_valid(grid,i,j-1)): #up
+                    sum += (-1)*grid.matrix[i][j-1]
+                if(check_valid(grid,i,j+1)): #down
+                    sum += (-1)*grid.matrix[i][j+1]
+            congested.append(float(sum)/28)
+    #print(congested)
+    return congested
+            
+                
+
+    
 
 
 def color_ret(random_array, i, j, cols):
@@ -19,9 +45,9 @@ class Grid:
         self.cols = columns
         self.size = size
         self.grid = pygame.Surface([rows * size, columns * size])
-        self.grid.fill('#567e4a')
+        self.grid.fill('#5ba61b')
         self.matrix = np.zeros((rows, columns))
-        self.congestion = congestion_array(rows, columns)
+        self.congestion = np.zeros(rows*columns)
         self.location = dict()
 
     def initialize_grid(self):
@@ -86,3 +112,26 @@ class Grid:
 
     def put_taxi(self, name, i, j):
         self.location[name] = (i, j)
+
+    def create_congestion(self):
+        self.congestion = congestion_array(self)
+        self.update_congested_road()
+
+    def update_congested_road(self):
+        road = []
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.matrix[i][j] != 0:
+                # road.append((j, i, matrix[i][j]))
+                    road.append((i, j, self.matrix[i][j]))
+
+        for x, y, z in road:
+            if z == 1:
+                self.put_vertical_road(x, y)
+            elif z == 2:
+                self.put_horizontal_road(x, y)
+            elif z == 3 or z == 4:
+                self.put_intersection(x, y)
+            # time.sleep(.01)
+
+

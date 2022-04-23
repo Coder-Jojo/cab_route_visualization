@@ -102,8 +102,8 @@ def find_big_square(list_unassigned):
 
 
 
-def is_consistent(assigned_coordinates, assigned_object,tot_num_houses, tot_num_industries,domain, tot_airports):
-    if((assigned_object=='House' or assigned_object=='Ground') and tot_num_industries>0):   #House or ground away
+def is_consistent(assigned_coordinates, assigned_object,tot_num_houses, tot_num_industries,domain, tot_airports, tot_num_railways):
+    if((assigned_object=='House' or assigned_object == 'Building') and tot_num_industries>0):   #House or ground away
         return False
     if(assigned_object=='Indus' and tot_num_houses<5*(tot_num_industries+1)): #minimum number of houses per industry
         return False
@@ -113,6 +113,10 @@ def is_consistent(assigned_coordinates, assigned_object,tot_num_houses, tot_num_
         return False
     if(assigned_object == 'Airport' and tot_airports>0):
       return False
+    if(assigned_object == 'Railway' and tot_num_railways>0):
+      return False
+    if(tot_num_houses>0 and assigned_object == 'Indus'):
+        return False
     return True
 
 def inferences(assigned_object,domain_left):
@@ -120,7 +124,7 @@ def inferences(assigned_object,domain_left):
         return True
         
 
-def bactracking(unassigned_coordinates, domain_left, assignment,tot_num_houses, tot_num_industries, tot_num_airports):
+def backtracking(unassigned_coordinates, domain_left, assignment,tot_num_houses, tot_num_industries, tot_num_airports, tot_num_railways):
     
     if(len(unassigned_coordinates) == 0): #all assigned
         
@@ -137,7 +141,7 @@ def bactracking(unassigned_coordinates, domain_left, assignment,tot_num_houses, 
             x = find_square_of_this_size(to_be_assigned, dict_of_sizes[i])
             unassigned_coordinates = unassigned_coordinates + Diff(to_be_assigned , x)
             to_be_assigned = x
-        if is_consistent(to_be_assigned, i, tot_num_houses, tot_num_industries, domain_left, tot_num_airports):
+        if is_consistent(to_be_assigned, i, tot_num_houses, tot_num_industries, domain_left, tot_num_airports, tot_num_railways):
             if(i == 'House'):
                 tot_num_houses += 1
                 flag1 = 1
@@ -146,6 +150,9 @@ def bactracking(unassigned_coordinates, domain_left, assignment,tot_num_houses, 
                 flag2 = 1
             if( i == 'Airport'):
               tot_num_airports += 1
+            if( i == 'Railway'):
+                tot_num_railways += 1
+            
 
             if(inferences(i, domain_left)):
                 domain_left= Diff(domain_left,  ['House','Ground']) #Removing from domain
@@ -154,7 +161,7 @@ def bactracking(unassigned_coordinates, domain_left, assignment,tot_num_houses, 
             
             assignment.append(temp2) #assignment is the form of list of list, where the last index in the list inside list is the object assigned
             
-            result = bactracking(unassigned_coordinates, domain_left, assignment, tot_num_houses, tot_num_industries, tot_num_airports)   #recursive call
+            result = backtracking(unassigned_coordinates, domain_left, assignment, tot_num_houses, tot_num_industries, tot_num_airports, tot_num_railways)   #recursive call
             
             
             if(len(result)>0):
