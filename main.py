@@ -25,12 +25,9 @@ taxis = [taxi_1, taxi_2]
 
 if __name__ == '__main__':
 
+    print('starting logical thread')
     threading.Thread(target=logic, args=[grid, taxis, structures], daemon=True).start()
 
-    # running logical part in the different thread to speed the gui
-    # for taxi in taxis:
-    #     threading.Thread(target=logic, args=[grid, taxi], daemon=True).start()
-
-    # GUI
+    print('starting the pygame windows')
     run_gui(grid, taxi_group, structures)
 
