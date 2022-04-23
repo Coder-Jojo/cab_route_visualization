@@ -49,6 +49,9 @@ class Grid:
         self.matrix = np.zeros((rows, columns))
         self.congestion = np.zeros(rows*columns)
         self.location = dict()
+        self.path = dict()
+        self.force_stop = False
+        self.cab_request = list()
 
     def initialize_grid(self):
         n = self.rows * self.size
@@ -62,47 +65,40 @@ class Grid:
         rect = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
         pygame.draw.rect(self.grid, color, rect)
 
-    def put_vertical_road(self, i, j, highlight=False, color='grey'):
+    def put_vertical_road(self, i, j, highlight=False, color=None):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        # rect2 = pygame.Rect(i * self.size + self.size * .4, j * self.size + self.size * .2, self.size * .2,
-        #                     self.size * .6)
         rect2 = pygame.Rect(i * self.size + self.size * .2, j * self.size + self.size * .4, self.size * .6,
                             self.size * .2)
-        # if not highlight:
-        #     color = color_ret(self.congestion, i, j, self.cols)
-        color = color_ret(self.congestion, i, j, self.cols)
+        new_color = color_ret(self.congestion, i, j, self.cols)
         if highlight:
-            a, b, c = color
-            color = (b, c, a)
-            color = (c, a, b)
+            a, b, c = new_color
+            new_color = (c, a, b)
+        if color is None:
+            color = new_color
         pygame.draw.rect(self.grid, color, rect1)
         pygame.draw.rect(self.grid, '#2e2828', rect2)
 
-    def put_horizontal_road(self, i, j, highlight=False, color='grey'):
+    def put_horizontal_road(self, i, j, highlight=False, color=None):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        # rect2 = pygame.Rect(i * self.size + self.size * .2, j * self.size + self.size * .4, self.size * .6,
-        #                     self.size * .2)
         rect2 = pygame.Rect(i * self.size + self.size * .4, j * self.size + self.size * .2, self.size * .2,
                             self.size * .6)
-        # if not highlight:
-        #     color = color_ret(self.congestion, i, j, self.cols)
-        color = color_ret(self.congestion, i, j, self.cols)
+        new_color = color_ret(self.congestion, i, j, self.cols)
         if highlight:
-            a, b, c = color
-            color = (b, c, a)
-            color = (c, a, b)
+            a, b, c = new_color
+            new_color = (c, a, b)
+        if color is None:
+            color = new_color
         pygame.draw.rect(self.grid, color, rect1)
         pygame.draw.rect(self.grid, '#2e2828', rect2)
 
-    def put_intersection(self, i, j, highlight=False, color='grey'):
+    def put_intersection(self, i, j, highlight=False, color=None):
         rect1 = pygame.Rect(i * self.size, j * self.size, self.size, self.size)
-        # if not highlight:
-        #     color = color_ret(self.congestion, i, j, self.cols)
-        color = color_ret(self.congestion, i, j, self.cols)
+        new_color = color_ret(self.congestion, i, j, self.cols)
         if highlight:
-            a, b, c = color
-            color = (b, c, a)
-            color = (c, a, b)
+            a, b, c = new_color
+            new_color = (c, a, b)
+        if color is None:
+            color = new_color
         pygame.draw.rect(self.grid, color, rect1)
         pygame.draw.circle(self.grid, '#2e2828', ((i + .5) * self.size, (j + .5) * self.size), self.size / 4)
 
@@ -132,6 +128,35 @@ class Grid:
                 self.put_horizontal_road(x, y)
             elif z == 3 or z == 4:
                 self.put_intersection(x, y)
-            # time.sleep(.01)
 
+    def put_path(self, name, i, j):
+        self.path[name] = (i, j)
+
+    def a_star_cells(self, x, y, color):
+        z = self.matrix[x][y]
+        if z == 1:
+            self.put_vertical_road(x, y, color=color)
+        elif z == 2:
+            self.put_horizontal_road(x, y, color=color)
+        elif z == 3 or z == 4:
+            self.put_intersection(x, y, color=color)
+
+    def get_back_congestion_road(self, nodes):
+        for x, y in nodes:
+            z = self.matrix[x][y]
+            if z == 1:
+                self.put_vertical_road(x, y)
+            elif z == 2:
+                self.put_horizontal_road(x, y)
+            elif z == 3 or z == 4:
+                self.put_intersection(x, y)
+
+    def force_stop(self):
+        self.force_stop = True
+
+    def put(self, source, dest, person, target):
+        self.cab_request.append((source, dest, person, target))
+
+    def pop(self):
+        self.cab_request.pop(0)
 
