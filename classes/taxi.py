@@ -115,7 +115,6 @@ class Taxi(pygame.sprite.Sprite):
             self.move_on_path()
             x = self.x // self.size
             y = self.y // self.size
-            self.new_speed = self.speed * (1.1 - 0.5 * self.congestion[int(x * self.col_len + y)])
+            self.new_speed = self.speed * max(.5, (1 - 5 * self.grid.congestion[int(x * self.col_len + y)]))
         self.rect.x = self.x + offset[0]
         self.rect.y = self.y + offset[1]
-

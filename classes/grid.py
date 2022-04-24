@@ -10,7 +10,6 @@ def check_valid(grid,i,j):
     return True
 
 def congestion_array(grid):
-    print(grid.matrix)
     congested = []
     for i in range(grid.rows):
         for j in range(grid.cols):
@@ -26,7 +25,6 @@ def congestion_array(grid):
                 if(check_valid(grid,i,j+1)): #down
                     sum += (-1)*grid.matrix[i][j+1]
             congested.append(float(sum)/28)
-    #print(congested)
     return congested
             
                 

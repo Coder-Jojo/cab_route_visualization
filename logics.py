@@ -15,13 +15,13 @@ def run_taxi(grid, taxi, start, end, path, person, target):
     path = A_star.path(taxi_node, path, grid, passenger_node)
     taxi.update_path(path)
     person.kill()
+    target.kill()
     time.sleep(1)
     while taxi.engine_on:
         time.sleep(1)
     path = A_star.path(start, A_star.search_path(start, end, grid, taxi.name), grid, end)
     # taxi.spawn(path[0][0], path[0][1])
     taxi.update_path(path)
-    target.kill()
 
 
 def find_path(grid, location, taxi_list, source, taxi):
@@ -97,7 +97,7 @@ def find_best_taxi(grid, taxis, source, dest, person, target):
 
 def logic(grid, taxis, structures):
     print('creating roads')
-    create_road(grid, 40, 20)
+    create_road(grid, 50, 25)
 
     print('calculating best location for taxi spawning')
     spawn_taxi(grid, taxis)
@@ -116,7 +116,7 @@ def logic(grid, taxis, structures):
             temp.sort()
             x = temp[0][0]
             y = temp[0][1]
-            image2 = Spawn(x,y,dict_of_sizes[assigned[-1]],assigned[-1], grid.size)
+            image2 = Spawn(x,y,dict_of_sizes[assigned[-1]], assigned[-1], grid.size)
             structures.add(image2)
             for indices in assigned[0]:
                 grid.matrix[indices[0]][indices[1]] = -1*dict_of_sizes[assigned[-1]]
